@@ -1,10 +1,22 @@
+# ACCOUNTS
+# Michael Castro - soledad.pose = 11 
+# Jericho Yang - geraldine grant = 25
+# Moana Alonzo - wilzone143 = 37
+# Jenny Apakabago - wirma.ole3535 = 40
+# Christian Abador - k63 = 2
+# kenny sofer = 24
+# Rhiana Alonzo - layla lorenjin = 18
+# Brendan Eich - jenny humbong = 22
+# James Alarte - Toyoyoy = 16
+# Jerome Calawing - Soledad Pakshet  = 35
+# Sofia Andrade - Sofia Andrade = 48
+# Olgie Alonzo - Silverio Dragoe = 30
+# Robert Hapiz - Roberthapiz = 6
+
 import openai
-
-
-# time
 import time
-
 import random
+import os
 
 # selenium
 from selenium import webdriver
@@ -21,6 +33,16 @@ def typeOfMessage():
   typesFeeling = ["joy", "fun", "engaging", "supportive", "appreciation", "excitement", "wholesome"]
   randominium = random.randint(0, len(typesFeeling) -1)
   return typesFeeling[randominium]
+
+def cli(status):
+  os.system('cls')
+  print("*************************************")
+  print("Account " + str(profCounter) + " out of " + str(len(profile)))
+  print("*************************************")
+  print("Profile name       : " + prof.fullName)
+  print("Current status     : " + str(threadCounter) + " out of " + str(len(facebook)))
+  print("Current activity   : " + status)
+  print("*************************************")
 
 class Facebook:
   def __init__(self, link, postType):
@@ -40,58 +62,51 @@ class Profile:
 # INITIAL
 
 facebook = []
-facebook.append(Facebook("posts/760803052712859/?comment_id=760875826038915","comment"))
-facebook.append(Facebook("posts/760935576032940/?comment_id=760936562699508","comment"))
-facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
-facebook.append(Facebook("posts/759704576156040?comment_id=759787379481093","comment"))
-facebook.append(Facebook("posts/759704576156040?comment_id=759776516148846","comment"))
-facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
-facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
-facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
-facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
-facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
-facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
-facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
+# facebook.append(Facebook("posts/760803052712859/?comment_id=760875826038915","comment"))
+# facebook.append(Facebook("posts/760935576032940/?comment_id=760936562699508","comment"))
+# facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
+# facebook.append(Facebook("posts/759704576156040?comment_id=759787379481093","comment"))
+# facebook.append(Facebook("posts/759704576156040?comment_id=759776516148846","comment"))
+# facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
+# facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
+# facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
+# facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
+# facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
+# facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
+# facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
+# facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
+# facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
+# facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
+# facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
+# facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
 facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759839196142578","comment"))
+# facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
+# facebook.append(Facebook("permalink/759741329485698/?comment_id=759839196142578","comment"))
 
 profile = []
-profile.append(Profile("Michael Castro", 11))
+# profile.append(Profile("Michael Castro", 11))
+# profile.append(Profile("Jericho Yang", 25))
+# profile.append(Profile("Moana Alonzo", 37)) ---- suspended
+# profile.append(Profile("Jenny Apakabago", 40))
+# profile.append(Profile("Christian Abador", 2))
+# profile.append(Profile("Kenny Sofer", 24))
+# profile.append(Profile("Rhiana Alonzo", 18)) ---- suspended
+# profile.append(Profile("Brendan Eich", 22))
+profile.append(Profile("James Alarte", 16))
+# profile.append(Profile("Jerome Calawing", 35))
+profile.append(Profile("Sofia Andrade", 48))
+# profile.append(Profile("Olgie Alonzo", 30))
+# profile.append(Profile("Robert Hapiz", 6))
 
-# ACCOUNTS
-# Michael Castro - soledad.pose = 11 
-# Jericho Yang - geraldine grant = 25
-# Moana Alonzo - wilzone143 = 37
-# Jenny Apakabago - wirma.ole3535 = 40
-# Christian Abador - k63 = 2
-# kenny sofer = 24
-# Rhiana Alonzo - layla lorenjin = 18
-# Brendan Eich - jenny humbong = 22
-# James Alarte - Toyoyoy = 16
-# Jerome Calawing - Soledad Pakshet  = 35
-# Sofia Andrade - Sofia Andrade = 48
-# Olgie Alonzo - Silverio Dragoe = 30
-# Robert Hapiz - Roberthapiz = 6
-
-browsersProfile = [11, 25, 37, 40, 2, 24, 18, 22]
-# browsersProfile = [22]
-
-
-for profile in browsersProfile:
-  print("Current profile: " + str(profile))
+profCounter = 1
+for prof in profile:
   testing = 0
   
   # WEBDRIVER CONFIGURATION
   if not testing:
     options = webdriver.ChromeOptions()
     options.add_argument('--user-data-dir=C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data')
-    options.add_argument('--profile-directory=Profile '+ str(profile))
+    options.add_argument('--profile-directory=Profile '+ str(prof.browserNumber))
     options.add_argument('lang=en')
     options.add_argument('--disable-blink-features=AutomationControlled')
     prefs = {
@@ -125,12 +140,11 @@ for profile in browsersProfile:
   
   # STARTER
   threadCounter = 1
-
   for thread in facebook:
     isThreadGood = False
     while isThreadGood is False:
       try:
-        print("Thread: number " + str(threadCounter))
+        cli("Thread opened")
 
         # Go to page
         browser.get(thread.link)
@@ -143,26 +157,27 @@ for profile in browsersProfile:
 
         # Comment
         WebDriverWait(browser, waiting_time).until(EC.presence_of_element_located((By.TAG_NAME, commentElement)))
+        thread.threadMessage = browser.execute_script('return document.querySelector("div[data-type=transactional] div[data-mcomponent=MContainer]").children[0].children[1].textContent') 
         
         counter = 1
         while chatGptFeedback is not True:
-          print('Run '+ str(counter) +' while at thread ' + str(threadCounter))
           try:
-            thread.threadMessage = browser.execute_script('return document.querySelector("div[data-type=transactional] div[data-mcomponent=MContainer]").children[0].children[1].textContent') 
-            print("Post: " + thread.threadMessage)
+            # print("Post: " + thread.threadMessage)
         
             timeAlloted = 60
             ai_start_time = time.time()
         
             # Generate Sentence
-            print("Waiting for openAi response.")
+
+            cli("Waiting for AI response")
 
             message = "What to reply to a "+ thread.postType +" '"+ thread.threadMessage +"' where the reply should agree to the "+ thread.postType +" and the "+ thread.postType +" is not referring to me it refers to someone else. Add a little bit praise and appreciation to PHDream. Do not provide translation. Use taglish dialect. Use simple words and make the reply short, that will make the reply written like a real human. "
             messages.append({"role": "user", "content": message},)
             chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
             randomSentence = chat.choices[0].message.content
             browser.execute_script(f'document.querySelector("textarea").value = "{randomSentence}"')
-            print(randomSentence)
+
+            cli("AI response received")
         
             chatGptFeedback = True
           except Exception as error:
@@ -178,28 +193,37 @@ for profile in browsersProfile:
         WebDriverWait(browser, waiting_time).until(EC.element_to_be_clickable((By.CSS_SELECTOR, commentButtonElement)))
         browser.find_element(By.CSS_SELECTOR, commentButtonElement).click()
         
+        cli("Response commented to the thread")
+        
+        time.sleep(10)
+        
         ai_end_time = time.time()
         
         timeTaken = int(ai_end_time - ai_start_time)
         
-        forSleep = timeAlloted - timeTaken        
+        forSleep = timeAlloted - timeTaken  
         
         if forSleep > 0:
-          time.sleep(forSleep)
+          for i in range(forSleep):
+            cli("Sleeping for " + str(forSleep - (i + 1)) + " seconds")
+            time.sleep(1)
+          # cli("Sleeping for " + str(forSleep) + " seconds")
+          # time.sleep(forSleep)
         
-        print("Running next thread")
+        cli("Moving to the next thread")
 
-        threadCounter += 1
         isThreadGood = True
       except Exception as error:
         print("--- ERROR ---")
   
-  time.sleep(5)
+  for i in range(5):
+    cli("Moving to the next thread in "+ str(5 - (i + 1)) + " seconds")
+    time.sleep(1)
+    
+  threadCounter += 1
+  profCounter += 1
   browser.quit()  
     
-
-
-  
 # TIME FOR RECORDING
 end_time = time.time()
 duration_seconds = end_time - start_time

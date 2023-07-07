@@ -1,24 +1,42 @@
-import time
+import os
 import random
 
-timeAlloted = 60
-start_time = time.time()
+def typeOfMessage():
+  typesFeeling = ["joy", "fun", "engaging", "supportive", "appreciation", "excitement", "wholesome"]
+  randominium = random.randint(0, len(typesFeeling) -1)
+  return typesFeeling[randominium]
 
-time.sleep(5)
+def cli(status):
+  # os.system('cls')
+  # print("*************************************")
+  # print("Account " + str(profCounter) + " out of " + str(len(profile)))
+  # print("*************************************")
+  # print("Profile name       : " + prof.fullName)
+  # print("Current status     : " + str(threadCounter) + " out of " + str(len(facebook)))
+  # print("Current activity   : " + status)
+  print("*************************************")
 
-end_time = time.time()
+class Facebook:
+  def __init__(self, link, postType):
+    self.link = "https://m.facebook.com/groups/phdream/"+link
+    self.postType = postType
+    self.threadMessage = ""
+    self.messageFeeling = typeOfMessage()
+    
+class Profile:
+  def __init__(self, fullName, browserNumber):
+    self.fullName = fullName
+    self.browserNumber = browserNumber
+    self.grindComment = 0
+    
+    
+facebook = []
+facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
 
-timeTaken = int(end_time - start_time)
-# timeTaken = 62
+profile = []
+profile.append(Profile("Jerome Calawing", 35))
 
-forSleep = timeAlloted - timeTaken
-
-print(forSleep)
-
-if forSleep < 0:
-  print("sleep is 0")
-else:
-  print(forSleep)
-
-
-# print("Duration in seconds:", timeTaken)
+profCounter = 1
+# for prof in profile:
+#   print(profCounter)
+#   profCounter += 1
