@@ -85,17 +85,17 @@ facebook.append(Facebook("posts/761379739321857/?comment_id=761713135955184","co
 # facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
 # facebook.append(Facebook("posts/759704576156040?comment_id=759787379481093","comment"))
 # facebook.append(Facebook("posts/759704576156040?comment_id=759776516148846","comment"))
-# facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
-# facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
-# facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
-# facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
-# facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
-# facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
-# facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
-# facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
-# facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
-# facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
-# facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
+facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
+facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
+facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
+facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
+facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
+facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
+facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
+facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
+facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
+facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
+facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
 # facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
 # facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
 # facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
@@ -112,8 +112,8 @@ profile = []
 # profile.append(Profile("Rhiana Alonzo", 18)) ---- suspended
 profile.append(Profile("Brendan Eich", 22))
 # profile.append(Profile("James Alarte", 16))
-# profile.append(Profile("Jerome Calawing", 35))
-# profile.append(Profile("Sofia Andrade", 48))
+profile.append(Profile("Jerome Calawing", 35))
+profile.append(Profile("Sofia Andrade", 48))
 # profile.append(Profile("Olgie Alonzo", 30))
 profile.append(Profile("Robert Hapiz", 6))
 
@@ -240,6 +240,8 @@ for prof in profile:
         isThreadGood = True
       except Exception as error:
         if errorCounter > 5:
+          # https://m.facebook.com/groups/phdream/permalink/761379739321857/?comment_id=761755272617637
+          threadCounter += 1
           isThreadGood = True
         errorCounter += 1
         print("--- ERROR ---")
