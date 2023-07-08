@@ -14,9 +14,14 @@
 # Robert Hapiz - Roberthapiz = 6
 
 import openai
+
 import time
+from datetime import date
+
 import random
 import os
+
+import pandas as pd
 
 # selenium
 from selenium import webdriver
@@ -24,6 +29,21 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+
+#--------------------------
+# CHAT GPT CONFIGURATION
+openai.api_key = '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'
+messages = [{"role": "system", "content": "You are a kind helpful assistant."}]
+
+today = date.today()
+todayDate = today.strftime("%B %d, %Y")
+# PANDAS
+df = pd.read_excel("grind.xlsx", index_col=None)
+
+lastDate = df.iloc[df.shape[0] - 1]['Date']
+if lastDate != todayDate:
+  df.loc[len(df)] = [" ", " ", " "]
+  # print("Create blank")
 
 
 # TIME FOR RECORDING
@@ -63,39 +83,39 @@ class Profile:
 
 facebook = []
 
-facebook.append(Facebook("posts/761674715959026/?comment_id=761711155955382","comment"))
-facebook.append(Facebook("posts/761674715959026?comment_id=761733662619798","comment"))
+# facebook.append(Facebook("posts/761674715959026/?comment_id=761711155955382","comment"))
+# facebook.append(Facebook("posts/761674715959026?comment_id=761733662619798","comment"))
 
 # https://www.facebook.com/photo/?fbid=118774357934830&set=gm.761674715959026&idorvanity=734094518717046
-facebook.append(Facebook("posts/761674715959026/?comment_id=761849135941584","comment"))
-facebook.append(Facebook("posts/761674715959026/?comment_id=761772802615884","comment"))
-facebook.append(Facebook("posts/761674715959026/?comment_id=761722289287602","comment"))
-facebook.append(Facebook("posts/761674715959026/?comment_id=761718542621310","comment"))
+# facebook.append(Facebook("posts/761674715959026/?comment_id=761849135941584","comment"))
+# facebook.append(Facebook("posts/761674715959026/?comment_id=761772802615884","comment"))
+# facebook.append(Facebook("posts/761674715959026/?comment_id=761722289287602","comment"))
+# facebook.append(Facebook("posts/761674715959026/?comment_id=761718542621310","comment"))
 
 # Solid ng PHDREAM ONLINE CASINO
 # https://www.facebook.com/groups/phdream/posts/761379739321857/
-facebook.append(Facebook("posts/761379739321857/?comment_id=761533702639794","comment"))
-facebook.append(Facebook("posts/761379739321857/?comment_id=761755272617637","comment"))
-facebook.append(Facebook("posts/761379739321857/?comment_id=761710415955456","comment"))
-facebook.append(Facebook("posts/761379739321857/?comment_id=761397529320078","comment"))
-facebook.append(Facebook("posts/761379739321857/?comment_id=761713135955184","comment"))
+# facebook.append(Facebook("posts/761379739321857/?comment_id=761533702639794","comment"))
+# facebook.append(Facebook("posts/761379739321857/?comment_id=761755272617637","comment"))
+# facebook.append(Facebook("posts/761379739321857/?comment_id=761710415955456","comment"))
+# facebook.append(Facebook("posts/761379739321857/?comment_id=761397529320078","comment"))
+# facebook.append(Facebook("posts/761379739321857/?comment_id=761713135955184","comment"))
 
 # facebook.append(Facebook("posts/760803052712859/?comment_id=760875826038915","comment"))
 # facebook.append(Facebook("posts/760935576032940/?comment_id=760936562699508","comment"))
-# facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
+facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
 # facebook.append(Facebook("posts/759704576156040?comment_id=759787379481093","comment"))
-# facebook.append(Facebook("posts/759704576156040?comment_id=759776516148846","comment"))
-facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
-facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
-facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
-facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
-facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
-facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
-facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
+facebook.append(Facebook("posts/759704576156040?comment_id=759776516148846","comment"))
+# facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
+# facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
+# facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
+# facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
+# facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
+# facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
+# facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
+# facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
+# facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
+# facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
+# facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
 # facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
 # facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
 # facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
@@ -112,15 +132,28 @@ profile = []
 # profile.append(Profile("Rhiana Alonzo", 18)) ---- suspended
 profile.append(Profile("Brendan Eich", 22))
 # profile.append(Profile("James Alarte", 16))
-profile.append(Profile("Jerome Calawing", 35))
-profile.append(Profile("Sofia Andrade", 48))
+# profile.append(Profile("Jerome Calawing", 35))
+# profile.append(Profile("Sofia Andrade", 48))
 # profile.append(Profile("Olgie Alonzo", 30))
 profile.append(Profile("Robert Hapiz", 6))
 
 profCounter = 1
 for prof in profile:
-  testing = 0
+  profileName = prof.fullName
+  totalComments = 0
   
+  # check if Profile Exist
+  profileExist = df[(df['Facebook Name'] == profileName) & (df['Date'] == todayDate)].size
+  
+  if profileExist:
+    # get latest total comments in excel
+    totalComments = df.loc[df.index[(df['Facebook Name'] == profileName) & (df['Date'] == todayDate)]]["Comments"].values[0]
+  else:
+    # create profile to excel
+    df.loc[len(df)] = [profileName, todayDate, totalComments]
+    df.to_excel('grind.xlsx', index=False)
+  
+  testing = 0
   # WEBDRIVER CONFIGURATION
   if not testing:
     options = webdriver.ChromeOptions()
@@ -149,14 +182,6 @@ for prof in profile:
 
   #---------------------------------------------------
   waiting_time = 20;
-  
-  #--------------------------
-# CHAT GPT CONFIGURATION
-  openai.api_key = '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'
-  messages = [
-      {"role": "system", "content": "You are a kind helpful assistant."},
-  ]
-  
   
   # STARTER
   errorCounter = 0
@@ -226,21 +251,25 @@ for prof in profile:
         
         forSleep = timeAlloted - timeTaken  
         
+        threadCounter += 1
+        totalComments += 1
+        
         if forSleep > 0:
           for i in range(forSleep):
             cli("Sleeping for " + str(forSleep - (i + 1)) + " seconds")
             time.sleep(1)
           # cli("Sleeping for " + str(forSleep) + " seconds")
           # time.sleep(forSleep)
-
         
-        threadCounter += 1
         cli("Moving to the next thread")
-
+        
+        df.at[df.index[df['Facebook Name'] == profileName][0],'Comments'] = int(totalComments)
+        df.to_excel('grind.xlsx', index=False)
+        
+        
         isThreadGood = True
       except Exception as error:
         if errorCounter > 5:
-          # https://m.facebook.com/groups/phdream/permalink/761379739321857/?comment_id=761755272617637
           threadCounter += 1
           isThreadGood = True
         errorCounter += 1
