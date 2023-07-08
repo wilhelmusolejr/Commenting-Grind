@@ -12,6 +12,7 @@
 # Sofia Andrade - Sofia Andrade = 48
 # Olgie Alonzo - Silverio Dragoe = 30
 # Robert Hapiz - Roberthapiz = 6
+# jamaica solona - 7
 
 import openai
 
@@ -34,21 +35,35 @@ from selenium.webdriver.common.keys import Keys
 # CHAT GPT CONFIGURATION
 openai.api_key = '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'
 messages = [{"role": "system", "content": "You are a kind helpful assistant."}]
+#--------------------------
 
 today = date.today()
 todayDate = today.strftime("%B %d, %Y")
-# PANDAS
-df = pd.read_excel("grind.xlsx", index_col=None)
 
+grindFileName = "grind.xlsx"
+fbThreadFileName = "facebook_thread.xlsx"
+
+#--------------------------
+# PANDAS
+# read excel
+df = pd.read_excel(grindFileName, index_col=None)
+fbThreadDF = pd.read_excel(fbThreadFileName, index_col=None)
+
+# getting the last date
 lastDate = df.iloc[df.shape[0] - 1]['Date']
 if lastDate != todayDate:
-  df.loc[len(df)] = [" ", " ", " "]
   # print("Create blank")
+  df.loc[len(df)] = [" ", " ", " "]
 
 
+#--------------------------
 # TIME FOR RECORDING
 start_time = time.time()
+#--------------------------
 
+
+#--------------------------
+# FUNCTION
 def typeOfMessage():
   typesFeeling = ["joy", "fun", "engaging", "supportive", "appreciation", "excitement", "wholesome"]
   randominium = random.randint(0, len(typesFeeling) -1)
@@ -63,78 +78,121 @@ def cli(status):
   print("Current status     : " + str(threadCounter) + " out of " + str(len(facebook)))
   print("Current activity   : " + status)
   print("*************************************")
+#--------------------------
 
+#--------------------------
+# CLASS
 class Facebook:
   def __init__(self, link, postType):
-    self.link = "https://m.facebook.com/groups/phdream/"+link
+    self.link = "https://m.facebook.com/groups/phdream/" + link
     self.postType = postType
     self.threadMessage = ""
     self.messageFeeling = typeOfMessage()
+    
+  def trimUrl(link):
+    return str(link[int(link.find("posts")):len(link)])
+    
     
 class Profile:
   def __init__(self, fullName, browserNumber):
     self.fullName = fullName
     self.browserNumber = browserNumber
     self.grindComment = 0
-    
+#--------------------------
+
 
 #--------------------------
 # INITIAL
 
 facebook = []
 
-# facebook.append(Facebook("posts/761674715959026/?comment_id=761711155955382","comment"))
-# facebook.append(Facebook("posts/761674715959026?comment_id=761733662619798","comment"))
+# https://www.facebook.com/groups/phdream/posts/762244339235397/
+facebook.append(Facebook("posts/762244339235397/?comment_id=762292192563945","comment"))
+facebook.append(Facebook("posts/762244339235397/?comment_id=762367445889753","comment"))
+facebook.append(Facebook("posts/762244339235397/?comment_id=762366795889818","comment"))
+facebook.append(Facebook("posts/762244339235397/?comment_id=762526852540479","comment"))
+facebook.append(Facebook("posts/762244339235397/?comment_id=762562029203628","comment"))
+
+# https://www.facebook.com/groups/phdream/posts/762186599241171/
+facebook.append(Facebook("posts/762186599241171/?comment_id=762194982573666","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762203749239456 ","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762191329240698","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762199375906560","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762221322571032","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762208125905685","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762214902571674","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762192109240620","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762240759235755","comment"))
+facebook.append(Facebook("posts/762186599241171/?comment_id=762249892568175","comment"))
+# facebook.append(Facebook("","comment"))
+
+# https://www.facebook.com/groups/phdream/posts/762186735907824
+facebook.append(Facebook("posts/762186735907824/?comment_id=762235739236257","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762220649237766","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762195965906901","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762187645907733","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762201002573064","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762233915903106","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762231955903302","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762201545906343","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762243172568847","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762220839237747","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762232732569891","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762406205885877","comment"))
+facebook.append(Facebook("posts/762186735907824/?comment_id=762192409240590","comment"))
+
+facebook.append(Facebook("posts/761674715959026/?comment_id=761711155955382","comment"))
+facebook.append(Facebook("posts/761674715959026?comment_id=761733662619798","comment"))
 
 # https://www.facebook.com/photo/?fbid=118774357934830&set=gm.761674715959026&idorvanity=734094518717046
-# facebook.append(Facebook("posts/761674715959026/?comment_id=761849135941584","comment"))
-# facebook.append(Facebook("posts/761674715959026/?comment_id=761772802615884","comment"))
-# facebook.append(Facebook("posts/761674715959026/?comment_id=761722289287602","comment"))
-# facebook.append(Facebook("posts/761674715959026/?comment_id=761718542621310","comment"))
+facebook.append(Facebook("posts/761674715959026/?comment_id=761849135941584","comment"))
+facebook.append(Facebook("posts/761674715959026/?comment_id=761772802615884","comment"))
+facebook.append(Facebook("posts/761674715959026/?comment_id=761722289287602","comment"))
+facebook.append(Facebook("posts/761674715959026/?comment_id=761718542621310","comment"))
 
 # Solid ng PHDREAM ONLINE CASINO
 # https://www.facebook.com/groups/phdream/posts/761379739321857/
-# facebook.append(Facebook("posts/761379739321857/?comment_id=761533702639794","comment"))
-# facebook.append(Facebook("posts/761379739321857/?comment_id=761755272617637","comment"))
-# facebook.append(Facebook("posts/761379739321857/?comment_id=761710415955456","comment"))
-# facebook.append(Facebook("posts/761379739321857/?comment_id=761397529320078","comment"))
-# facebook.append(Facebook("posts/761379739321857/?comment_id=761713135955184","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761533702639794","comment"))
+# ---- facebook.append(Facebook("posts/761379739321857/?comment_id=761755272617637","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761710415955456","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761397529320078","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761713135955184","comment"))
 
-# facebook.append(Facebook("posts/760803052712859/?comment_id=760875826038915","comment"))
-# facebook.append(Facebook("posts/760935576032940/?comment_id=760936562699508","comment"))
+facebook.append(Facebook("posts/760803052712859/?comment_id=760875826038915","comment"))
+facebook.append(Facebook("posts/760935576032940/?comment_id=760936562699508","comment"))
 facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
-# facebook.append(Facebook("posts/759704576156040?comment_id=759787379481093","comment"))
+facebook.append(Facebook("posts/759704576156040?comment_id=759787379481093","comment"))
 facebook.append(Facebook("posts/759704576156040?comment_id=759776516148846","comment"))
-# facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
-# facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
-# facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
-# facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
-# facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
-# facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
-# facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
-# facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
-# facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
-# facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
-# facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
-# facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
-# facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
-# facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
-# facebook.append(Facebook("permalink/759741329485698/?comment_id=759839196142578","comment"))
+facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
+facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
+facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
+facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
+facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
+facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
+facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
+facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
+facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
+facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
+facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
+facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
+facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
+facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
+facebook.append(Facebook("permalink/759741329485698/?comment_id=759839196142578","comment"))
 
 profile = []
-# profile.append(Profile("Michael Castro", 11))
-# profile.append(Profile("Jericho Yang", 25))
+profile.append(Profile("Michael Castro", 11))
+profile.append(Profile("Jericho Yang", 25))
 # profile.append(Profile("Moana Alonzo", 37)) ---- suspended
-# profile.append(Profile("Jenny Apakabago", 40))
-# profile.append(Profile("Christian Abador", 2))
-
-# profile.append(Profile("Kenny Sofer", 24))
+profile.append(Profile("Jenny Apakabago", 40))
+profile.append(Profile("Christian Abador", 2))
+profile.append(Profile("Kenny Sofer", 24))
 # profile.append(Profile("Rhiana Alonzo", 18)) ---- suspended
 profile.append(Profile("Brendan Eich", 22))
-# profile.append(Profile("James Alarte", 16))
-# profile.append(Profile("Jerome Calawing", 35))
-# profile.append(Profile("Sofia Andrade", 48))
-# profile.append(Profile("Olgie Alonzo", 30))
+profile.append(Profile("James Alarte", 16))
+profile.append(Profile("Jerome Calawing", 35))
+profile.append(Profile("Sofia Andrade", 48))
+profile.append(Profile("Olgie Alonzo", 30))
+profile.append(Profile("Jamaica Solona", 7))
 profile.append(Profile("Robert Hapiz", 6))
 
 profCounter = 1
@@ -175,7 +233,6 @@ for prof in profile:
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('log-level=3')
     options.add_argument("--start-maximized")
-    options.set_headless(headless=False)
     options.add_argument('--user-agent="Mozilla/5.0 (Linux; Android 12; SM-N9750) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36 EdgA/112.0.1722.46"')
     browser = webdriver.Chrome(executable_path='driver\chromedriver.exe', options= options)
 
