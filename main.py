@@ -62,6 +62,24 @@ class Profile:
 # INITIAL
 
 facebook = []
+
+facebook.append(Facebook("posts/761674715959026/?comment_id=761711155955382","comment"))
+facebook.append(Facebook("posts/761674715959026?comment_id=761733662619798","comment"))
+
+# https://www.facebook.com/photo/?fbid=118774357934830&set=gm.761674715959026&idorvanity=734094518717046
+facebook.append(Facebook("posts/761674715959026/?comment_id=761849135941584","comment"))
+facebook.append(Facebook("posts/761674715959026/?comment_id=761772802615884","comment"))
+facebook.append(Facebook("posts/761674715959026/?comment_id=761722289287602","comment"))
+facebook.append(Facebook("posts/761674715959026/?comment_id=761718542621310","comment"))
+
+# Solid ng PHDREAM ONLINE CASINO
+# https://www.facebook.com/groups/phdream/posts/761379739321857/
+facebook.append(Facebook("posts/761379739321857/?comment_id=761533702639794","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761755272617637","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761710415955456","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761397529320078","comment"))
+facebook.append(Facebook("posts/761379739321857/?comment_id=761713135955184","comment"))
+
 # facebook.append(Facebook("posts/760803052712859/?comment_id=760875826038915","comment"))
 # facebook.append(Facebook("posts/760935576032940/?comment_id=760936562699508","comment"))
 # facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
@@ -79,7 +97,7 @@ facebook = []
 # facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
 # facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
 # facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
+# facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
 # facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
 # facebook.append(Facebook("permalink/759741329485698/?comment_id=759839196142578","comment"))
 
@@ -89,14 +107,15 @@ profile = []
 # profile.append(Profile("Moana Alonzo", 37)) ---- suspended
 # profile.append(Profile("Jenny Apakabago", 40))
 # profile.append(Profile("Christian Abador", 2))
+
 # profile.append(Profile("Kenny Sofer", 24))
 # profile.append(Profile("Rhiana Alonzo", 18)) ---- suspended
-# profile.append(Profile("Brendan Eich", 22))
-profile.append(Profile("James Alarte", 16))
+profile.append(Profile("Brendan Eich", 22))
+# profile.append(Profile("James Alarte", 16))
 # profile.append(Profile("Jerome Calawing", 35))
-profile.append(Profile("Sofia Andrade", 48))
+# profile.append(Profile("Sofia Andrade", 48))
 # profile.append(Profile("Olgie Alonzo", 30))
-# profile.append(Profile("Robert Hapiz", 6))
+profile.append(Profile("Robert Hapiz", 6))
 
 profCounter = 1
 for prof in profile:
@@ -123,6 +142,7 @@ for prof in profile:
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('log-level=3')
     options.add_argument("--start-maximized")
+    options.set_headless(headless=False)
     options.add_argument('--user-agent="Mozilla/5.0 (Linux; Android 12; SM-N9750) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36 EdgA/112.0.1722.46"')
     browser = webdriver.Chrome(executable_path='driver\chromedriver.exe', options= options)
 
@@ -139,7 +159,8 @@ for prof in profile:
   
   
   # STARTER
-  threadCounter = 1
+  errorCounter = 0
+  threadCounter = 0
   for thread in facebook:
     isThreadGood = False
     while isThreadGood is False:
@@ -156,9 +177,11 @@ for prof in profile:
         randomSentence = ""
 
         # Comment
+        cli("Waiting for precense of comment element")
         WebDriverWait(browser, waiting_time).until(EC.presence_of_element_located((By.TAG_NAME, commentElement)))
         thread.threadMessage = browser.execute_script('return document.querySelector("div[data-type=transactional] div[data-mcomponent=MContainer]").children[0].children[1].textContent') 
-        
+        cli("Post --> " + str(thread.threadMessage))
+
         counter = 1
         while chatGptFeedback is not True:
           try:
@@ -209,18 +232,22 @@ for prof in profile:
             time.sleep(1)
           # cli("Sleeping for " + str(forSleep) + " seconds")
           # time.sleep(forSleep)
+
         
+        threadCounter += 1
         cli("Moving to the next thread")
 
         isThreadGood = True
       except Exception as error:
+        if errorCounter > 5:
+          isThreadGood = True
+        errorCounter += 1
         print("--- ERROR ---")
   
   for i in range(5):
     cli("Moving to the next thread in "+ str(5 - (i + 1)) + " seconds")
     time.sleep(1)
     
-  threadCounter += 1
   profCounter += 1
   browser.quit()  
     
