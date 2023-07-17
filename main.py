@@ -22,6 +22,8 @@ from datetime import date
 import random
 import os
 
+import requests
+
 import pandas as pd
 
 # selenium
@@ -30,37 +32,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
-#--------------------------
-# CHAT GPT CONFIGURATION
-openai.api_key = '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'
-messages = [{"role": "system", "content": "You are a kind helpful assistant."}]
-#--------------------------
-
-today = date.today()
-todayDate = today.strftime("%B %d, %Y")
-
-grindFileName = "grind.xlsx"
-fbThreadFileName = "facebook_thread.xlsx"
-
-#--------------------------
-# PANDAS
-# read excel
-df = pd.read_excel(grindFileName, index_col=None)
-fbThreadDF = pd.read_excel(fbThreadFileName, index_col=None)
-
-# getting the last date
-lastDate = df.iloc[df.shape[0] - 1]['Date']
-if lastDate != todayDate:
-  # print("Create blank")
-  df.loc[len(df)] = [" ", " ", " "]
-
-
-#--------------------------
-# TIME FOR RECORDING
-start_time = time.time()
-#--------------------------
-
 
 #--------------------------
 # FUNCTION
@@ -75,10 +46,114 @@ def cli(status):
   print("Account " + str(profCounter) + " out of " + str(len(profile)))
   print("*************************************")
   print("Profile name       : " + prof.fullName)
-  print("Current status     : " + str(threadCounter) + " out of " + str(len(facebook)))
+  print("Current status     : " + str(threadCounter) + " out of " + str(fbThreadDF.shape[0]))
   print("Current activity   : " + status)
   print("*************************************")
+  
+def sendMessageTelegram(TOKEN, chat_id, message):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={chat_id}&text={message}"
+    requests.get(url).json()
+    
+def convert(seconds):
+    seconds = seconds % (24 * 3600)
+    hour = seconds // 3600
+    seconds %= 3600
+    minutes = seconds // 60
+    seconds %= 60
+     
+    return "%d:%02d:%02d" % (hour, minutes, seconds)
+  
+def generateRandomSentence():
+  starterMessage = ["Ay true ka jan ses", "Totoo hahaha", "Sinabi mo pa dzai,", 
+                    "Agreeng agree ako jan sa comment mo", "Sinabi mo pa hehe,", 
+                    "Ay very true yan", "Talaga nga noh,", "Super agree po,", "Tumpak na tumpak!"]
+  miniStarter = ['', "alam mo ba,", "share ko lang ha,", "pero", "basta", "tapos", "tas ano nga"]
+  middleMessage = ['ang swerte talaga noh', "Nadali mo po", "sana ako din sa susunod", "ang sarap talaga feeling pag ganyan", 
+                   "sobrang deseeerve talagaaaaa", "try ko nga ulit hihi, na eexcite na ako", 
+                   "wow na wow", "astig talaga", "madali lang din makapag cash out", "madali lang din maglaro eh",
+                   "enjoy na enjoy talaga ako", "ang daming pwedeng pag pilian!"]
+  complimentMessage = ["bukod don, legit and trusted pa ang PHDream", 
+                       "grabe talaga ang impact ni phdream", "the best talaga ang PHDream", 
+                       "PHDream all the way!", "have a wonderful day ka phdream", 
+                       "basta ph dream always winner talaga noh", 
+                       "katas nanaman ng phdream ang dami ng natulungan", 
+                       "solid talaga ng PhDream", "easy and fast talaga ang PHDream", "kaya bet ko talaga tong PHdream eh"
+                       , "super win na super win talaga kay ph dream"]
+  lastMessage = ["more blessings po", "Sana all talagaaaaa", "more income to come para satin", "best wishes po", "easy salapi naman pala dito ihhh", 
+                 "keep playing nalang ako para swertihin ulit", "push your luck madam", "", "forda game talaga lagi", "enjoyin lang ang game", "lezgooooo!"]
+  emojiMessage = ["🥵", ",", "🤑😍", "😎", "!", "😍", '🤩', '🌟🥵🌟', "", "", "🤑🤑", "","🥵", "✨", "✨🤑✨", "", "✨✨", ":)", "^_^", "^^", " ", "", ":*"]
+
+  gottenMessage = ['nabigyan ako ng chance para mabili ang mga gusto ko', 'nabili ko na lahat ng mga kailangan ko', 
+                   'nakabili na din ako ng dream phone ko', 'nakakapag travel na ako', "ang saya lang hihi"]
+
+  startSms = starterMessage[random.randrange(0,len(starterMessage))]
+  miniStarterSms = miniStarter[random.randrange(0,len(miniStarter))]
+  middleSms = middleMessage[random.randrange(0,len(middleMessage))]
+  complimentSms = complimentMessage[random.randrange(0,len(complimentMessage))]
+  lastSms = lastMessage[random.randrange(0,len(lastMessage))]
+  gottenMessage = gottenMessage[random.randrange(0,len(gottenMessage))]
+  
+  addGottenMessage = random.randint(0, 1)
+  text = startSms + " " + miniStarterSms + " " + middleSms + " " + str(emojiMessage[random.randrange(0,len(emojiMessage))]) + " " + complimentSms + " " + lastSms + " " + str(emojiMessage[random.randrange(0,len(emojiMessage))]) + " "
+  
+  if addGottenMessage:
+    text += miniStarter[random.randrange(0,len(miniStarter))] + " " + gottenMessage
+  
+  return text
 #--------------------------
+
+#--------------------------
+# CHAT GPT CONFIGURATION
+openai.api_key = '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'
+messages = [{"role": "system", "content": "You are a kind helpful assistant."}]
+#--------------------------
+# TELEGRAM CONFIGURATION
+TOKEN = "6336647733:AAFL3PhVvfu_8k9yVa03M5iEz0Cw1oePlUM"
+chat_id = "1559668342"
+#--------------------------
+
+
+telegramCode = str(random.randint(100, 999))
+
+today = date.today()
+todayDate = today.strftime("%B %d, %Y")
+
+dummy = False
+
+if dummy:
+  grindFileName = "grind.xlsx"
+  fbThreadFileName = "dummy_facebook_thread.xlsx"
+else:
+  grindFileName = "grind.xlsx"
+  fbThreadFileName = "facebook_thread.xlsx"
+  
+triesNumber = 2
+textLimit = 80
+
+waiting_time = 10
+
+#--------------------------
+# PANDAS
+# read excel
+df = pd.read_excel(grindFileName, index_col=None)
+fbThreadDF = pd.read_excel(fbThreadFileName, index_col=None)
+
+# getting the last date
+lastDate = df.iloc[df.shape[0] - 1]['Date']
+if lastDate != todayDate:
+  # print("Create blank")
+  df.loc[len(df)] = [" ", " ", " "]
+  tgMessage = " ----- " + str(todayDate) + " ----- "
+  sendMessageTelegram(TOKEN, chat_id, tgMessage)
+
+
+#--------------------------
+# TIME FOR RECORDING
+start_time = time.time()
+#--------------------------
+
+
+
 
 #--------------------------
 # CLASS
@@ -104,99 +179,27 @@ class Profile:
 #--------------------------
 # INITIAL
 
-facebook = []
-
-# https://www.facebook.com/groups/phdream/posts/762244339235397/
-facebook.append(Facebook("posts/762244339235397/?comment_id=762292192563945","comment"))
-facebook.append(Facebook("posts/762244339235397/?comment_id=762367445889753","comment"))
-facebook.append(Facebook("posts/762244339235397/?comment_id=762366795889818","comment"))
-facebook.append(Facebook("posts/762244339235397/?comment_id=762526852540479","comment"))
-facebook.append(Facebook("posts/762244339235397/?comment_id=762562029203628","comment"))
-
-# https://www.facebook.com/groups/phdream/posts/762186599241171/
-facebook.append(Facebook("posts/762186599241171/?comment_id=762194982573666","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762203749239456 ","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762191329240698","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762199375906560","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762221322571032","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762208125905685","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762214902571674","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762192109240620","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762240759235755","comment"))
-facebook.append(Facebook("posts/762186599241171/?comment_id=762249892568175","comment"))
-# facebook.append(Facebook("","comment"))
-
-# https://www.facebook.com/groups/phdream/posts/762186735907824
-facebook.append(Facebook("posts/762186735907824/?comment_id=762235739236257","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762220649237766","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762195965906901","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762187645907733","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762201002573064","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762233915903106","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762231955903302","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762201545906343","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762243172568847","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762220839237747","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762232732569891","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762406205885877","comment"))
-facebook.append(Facebook("posts/762186735907824/?comment_id=762192409240590","comment"))
-
-facebook.append(Facebook("posts/761674715959026/?comment_id=761711155955382","comment"))
-facebook.append(Facebook("posts/761674715959026?comment_id=761733662619798","comment"))
-
-# https://www.facebook.com/photo/?fbid=118774357934830&set=gm.761674715959026&idorvanity=734094518717046
-facebook.append(Facebook("posts/761674715959026/?comment_id=761849135941584","comment"))
-facebook.append(Facebook("posts/761674715959026/?comment_id=761772802615884","comment"))
-facebook.append(Facebook("posts/761674715959026/?comment_id=761722289287602","comment"))
-facebook.append(Facebook("posts/761674715959026/?comment_id=761718542621310","comment"))
-
-# Solid ng PHDREAM ONLINE CASINO
-# https://www.facebook.com/groups/phdream/posts/761379739321857/
-facebook.append(Facebook("posts/761379739321857/?comment_id=761533702639794","comment"))
-# ---- facebook.append(Facebook("posts/761379739321857/?comment_id=761755272617637","comment"))
-facebook.append(Facebook("posts/761379739321857/?comment_id=761710415955456","comment"))
-facebook.append(Facebook("posts/761379739321857/?comment_id=761397529320078","comment"))
-facebook.append(Facebook("posts/761379739321857/?comment_id=761713135955184","comment"))
-
-facebook.append(Facebook("posts/760803052712859/?comment_id=760875826038915","comment"))
-facebook.append(Facebook("posts/760935576032940/?comment_id=760936562699508","comment"))
-facebook.append(Facebook("posts/759704576156040/?comment_id=759705089489322","comment"))
-facebook.append(Facebook("posts/759704576156040?comment_id=759787379481093","comment"))
-facebook.append(Facebook("posts/759704576156040?comment_id=759776516148846","comment"))
-facebook.append(Facebook("posts/756628039797027/?comment_id=756721556454342","comment"))
-facebook.append(Facebook("posts/756628039797027?comment_id=756683659791465","comment"))
-facebook.append(Facebook("posts/756628039797027?comment_id=756796763113488","comment"))
-facebook.append(Facebook("permalink/760006666125831/?comment_id=760014389458392","comment"))
-facebook.append(Facebook("permalink/760006666125831/?comment_id=760019062791258","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759775512815613","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759819346144563","comment"))
-facebook.append(Facebook("permalink/760929932700171/?comment_id=760933352699829","comment"))
-facebook.append(Facebook("permalink/760929932700171/?comment_id=760932679366563","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760883152704849","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760902112702953","comment"))
-facebook.append(Facebook("permalink/760803052712859/?comment_id=760885906037907","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759988892794275","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=760730616053436","comment"))
-facebook.append(Facebook("permalink/759741329485698/?comment_id=759839196142578","comment"))
-
 profile = []
-profile.append(Profile("Michael Castro", 11))
-profile.append(Profile("Jericho Yang", 25))
-# profile.append(Profile("Moana Alonzo", 37)) ---- suspended
-profile.append(Profile("Jenny Apakabago", 40))
-profile.append(Profile("Christian Abador", 2))
+# profile.append(Profile("Moana Alonzo", 37)) # ---- suspended
+# profile.append(Profile("Olgie Alonzo", 30)) # ---- suspended
+# profile.append(Profile("Christian Abador", 2)) #===
 profile.append(Profile("Kenny Sofer", 24))
-# profile.append(Profile("Rhiana Alonzo", 18)) ---- suspended
-profile.append(Profile("Brendan Eich", 22))
-profile.append(Profile("James Alarte", 16))
-profile.append(Profile("Jerome Calawing", 35))
-profile.append(Profile("Sofia Andrade", 48))
-profile.append(Profile("Olgie Alonzo", 30))
+# profile.append(Profile("Rhiana Alonzo",18)) # ---- not suspended
+# profile.append(Profile("Brendan Eich", 22))
+# profile.append(Profile("James Alarte", 16))
+# profile.append(Profile("Michael Castro", 11))
+# profile.append(Profile("Jerome Calawing", 35))
+# profile.append(Profile("Sofia Andrade", 48))
+# profile.append(Profile("Jenny Apakabago", 40))
 profile.append(Profile("Jamaica Solona", 7))
-profile.append(Profile("Robert Hapiz", 6))
+# profile.append(Profile("Robert Hapiz", 6))
+# profile.append(Profile("Jericho Yang", 25))
 
-profCounter = 1
+
+profCounter = 0
 for prof in profile:
+  isSuspeded = False
+  profCounter += 1
   profileName = prof.fullName
   totalComments = 0
   
@@ -205,11 +208,11 @@ for prof in profile:
   
   if profileExist:
     # get latest total comments in excel
-    totalComments = df.loc[df.index[(df['Facebook Name'] == profileName) & (df['Date'] == todayDate)]]["Comments"].values[0]
+    totalComments = int(df.loc[df.index[(df['Facebook Name'] == profileName) & (df['Date'] == todayDate)]]["Comments"].values[0])
   else:
     # create profile to excel
     df.loc[len(df)] = [profileName, todayDate, totalComments]
-    df.to_excel('grind.xlsx', index=False)
+    df.to_excel(grindFileName, index=False)
   
   testing = 0
   # WEBDRIVER CONFIGURATION
@@ -217,7 +220,6 @@ for prof in profile:
     options = webdriver.ChromeOptions()
     options.add_argument('--user-data-dir=C:\\Users\\Administrator\\AppData\\Local\\Google\\Chrome\\User Data')
     options.add_argument('--profile-directory=Profile '+ str(prof.browserNumber))
-    options.add_argument('lang=en')
     options.add_argument('--disable-blink-features=AutomationControlled')
     prefs = {
                     "profile.default_content_setting_values.geolocation": 2,
@@ -232,66 +234,74 @@ for prof in profile:
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('log-level=3')
-    options.add_argument("--start-maximized")
+    
+    # # options.add_argument('--headless')
+    options.add_argument('--disable-gpu')
     options.add_argument('--user-agent="Mozilla/5.0 (Linux; Android 12; SM-N9750) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36 EdgA/112.0.1722.46"')
     browser = webdriver.Chrome(executable_path='driver\chromedriver.exe', options= options)
 
-
   #---------------------------------------------------
-  waiting_time = 20;
   
   # STARTER
   errorCounter = 0
   threadCounter = 0
-  for thread in facebook:
+  timeAllotedIndex = 0
+  for index, row in fbThreadDF.iterrows():
+    threadLink = row['Facebook Link']
+    threadType = row['Thread Type']
+    threadStatus = row['Status']
+    threadErrorCount = row['ErrorCount']
+    
+    threadCounter += 1
     isThreadGood = False
+    
+    thread_start_time = time.time()
     while isThreadGood is False:
       try:
         cli("Thread opened")
 
         # Go to page
-        browser.get(thread.link)
+        browser.get(threadLink)
         
+        # Elements 
         commentElement = 'textarea'
         commentButtonElement = "div[aria-label='SEND']"
-        
-        chatGptFeedback = False
-        randomSentence = ""
+        suspendedElement = "#root > div._7om2"
 
-        # Comment
-        cli("Waiting for precense of comment element")
-        WebDriverWait(browser, waiting_time).until(EC.presence_of_element_located((By.TAG_NAME, commentElement)))
-        thread.threadMessage = browser.execute_script('return document.querySelector("div[data-type=transactional] div[data-mcomponent=MContainer]").children[0].children[1].textContent') 
-        cli("Post --> " + str(thread.threadMessage))
-
-        counter = 1
-        while chatGptFeedback is not True:
-          try:
-            # print("Post: " + thread.threadMessage)
+        # _59k _2rgt _1j-f _2rgt
+        try:
+          WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.CSS_SELECTOR, suspendedElement)))
+          break
+        except Exception as error:
+          # Comment
+          cli("Waiting for precense of comment element")
+          # browser.get_screenshot_as_file("screenshot.png")
+          WebDriverWait(browser, waiting_time).until(EC.presence_of_element_located((By.TAG_NAME, commentElement)))
+          threadOpPost = browser.execute_script('return document.querySelector("div[data-type=transactional] div[data-mcomponent=MContainer]").children[0].children[1].textContent') 
         
-            timeAlloted = 60
-            ai_start_time = time.time()
-        
-            # Generate Sentence
+        timeAlloted = random.randint(35, 70)
+        timeAllotedArr = [60, 30, 50, 120, 60, 50, 30, 60, 70, 20, 60]
+        # Generate Sentence
 
-            cli("Waiting for AI response")
+        cli(str(threadOpPost[0:50]) + "..." )
+            
+        if len(str(threadOpPost)) > textLimit:
+          threadOpPost = threadOpPost[0:textLimit]
 
-            message = "What to reply to a "+ thread.postType +" '"+ thread.threadMessage +"' where the reply should agree to the "+ thread.postType +" and the "+ thread.postType +" is not referring to me it refers to someone else. Add a little bit praise and appreciation to PHDream. Do not provide translation. Use taglish dialect. Use simple words and make the reply short, that will make the reply written like a real human. "
-            messages.append({"role": "user", "content": message},)
-            chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
-            randomSentence = chat.choices[0].message.content
-            browser.execute_script(f'document.querySelector("textarea").value = "{randomSentence}"')
-
-            cli("AI response received")
+        # try:
+        #   messageAi = "What to reply to a "+ threadType +" '"+ threadOpPost +"' where the reply should agree to the "+ threadOpPost +" and the "+ threadOpPost +" is not referring to me, it refers to someone else. Add a little bit praise and appreciation to PHDream. Use taglish dialect. Use simple words and make the reply short that will make it like written by real human."
+        #   messages.append({"role": "user", "content": messageAi},)
+        #   chat = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
+        #   aiFeedback = chat.choices[0].message.content
+        # except Exception as error:
+        #   aiFeedback = generateRandomSentence()
         
-            chatGptFeedback = True
-          except Exception as error:
-            time.sleep(10)
-            print("An exception occurred ", error)
-      
-        counter += 1
+        aiFeedback = generateRandomSentence()
         
-        # browser.find_element(By.TAG_NAME, commentElement).send_keys(Keys.CONTROL, 'v') # paste
+            
+        browser.execute_script(f'document.querySelector("textarea").value = "{aiFeedback}"')
+        cli("AI response received")
+        
         browser.find_element(By.TAG_NAME, commentElement).send_keys(" ")
 
         # Button
@@ -300,49 +310,79 @@ for prof in profile:
         
         cli("Response commented to the thread")
         
-        time.sleep(10)
+        waiting_timer = 10
+        for i in range(waiting_timer):
+            cli("Submitting comment. Ending in " + str(waiting_timer - (i + 1)) + " seconds")
+            time.sleep(1)
         
-        ai_end_time = time.time()
+        # browser.get_screenshot_as_file("screenshot" + str(random.randint(1,100)) +".png")
+
+        # ai_end_time = time.time()
+        thread_end_time = time.time()
         
-        timeTaken = int(ai_end_time - ai_start_time)
+        # timeTaken = int(ai_end_time - ai_start_time)
+        timeTaken = int(thread_end_time - thread_start_time)
         
-        forSleep = timeAlloted - timeTaken  
+        forSleep = timeAllotedArr[timeAllotedIndex] - timeTaken  
         
-        threadCounter += 1
         totalComments += 1
         
         if forSleep > 0:
           for i in range(forSleep):
-            cli("Sleeping for " + str(forSleep - (i + 1)) + " seconds")
+            # print(timeAlloted)
+            # print(timeTaken)
+            # print(forSleep)
+            cli("Alotted time: "+ str(timeAllotedArr[timeAllotedIndex]) +" | Sleeping for " + str(forSleep - (i + 1)) + " seconds")
             time.sleep(1)
           # cli("Sleeping for " + str(forSleep) + " seconds")
           # time.sleep(forSleep)
         
         cli("Moving to the next thread")
         
-        df.at[df.index[df['Facebook Name'] == profileName][0],'Comments'] = int(totalComments)
-        df.to_excel('grind.xlsx', index=False)
-        
+        df.at[df.index[(df['Facebook Name'] == profileName) & (df['Date'] == todayDate) ][0],'Comments'] = int(totalComments)
+        df.to_excel(grindFileName, index=False)
+
+        timeAllotedIndex += 1
+        if timeAllotedIndex == len(timeAllotedArr):
+          timeAllotedIndex = 0
         
         isThreadGood = True
       except Exception as error:
-        if errorCounter > 5:
-          threadCounter += 1
+        if errorCounter > triesNumber:
+          browser.get_screenshot_as_file("screenshot"+str(random.randint(100, 999))+".png")
           isThreadGood = True
         errorCounter += 1
         print("--- ERROR ---")
-  
-  for i in range(5):
-    cli("Moving to the next thread in "+ str(5 - (i + 1)) + " seconds")
-    time.sleep(1)
     
-  profCounter += 1
-  browser.quit()  
+    waiting_timer = 3
+    for i in range(waiting_timer):
+      cli("Moving to the next thread in "+ str(waiting_timer - (i + 1)) + " seconds")
+      time.sleep(1)
+    
+  
+  waiting_timer = 5
+  for i in range(waiting_timer):
+    cli("Moving to the next profile in "+ str(waiting_timer - (i + 1)) + " seconds")
+    time.sleep(1)
+  
+  try:
+    tgMessage = " | " + telegramCode + " | " + str(profileName) + " -> " + str(totalComments) + " comments"
+    sendMessageTelegram(TOKEN, chat_id, tgMessage)
+  except Exception as error:
+    print("Error occured at sending telegram message", error)
+    
+
+  browser.quit()
+    
     
 # TIME FOR RECORDING
 end_time = time.time()
-duration_seconds = end_time - start_time
-print("Duration in seconds:", duration_seconds)
+duration_seconds = int(end_time - start_time)
 
+os.system('cls')
+print("*************************************")
+print("Duration in seconds:", convert(duration_seconds))
+print("Run " + str(len(profile)) + " facebook profiles")
+print("*************************************")
 # input("Press Enter to continue...")
 
